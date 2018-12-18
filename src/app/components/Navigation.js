@@ -13,7 +13,7 @@ const Navigation = () => {
     return (
       <div>
         <Navbar color="dark" dark expand="xl">
-          <NavbarBrand href="/">Dictionary Management App</NavbarBrand>
+          <NavbarBrand href="#">Dictionary Management App</NavbarBrand>
           <Nav>
             <NavItem>
               <NavLink className="nav-link-gdc"
@@ -24,7 +24,7 @@ const Navigation = () => {
             <NavItem>
               <NavLink className="nav-link-gdc"
                 tag={RRNavLink}
-                to="/">Dictionaries</NavLink>
+                to="/dictionaries">Dictionaries</NavLink>
             </NavItem>
             <NavItem>
               <NavLink className="nav-link-gdc"

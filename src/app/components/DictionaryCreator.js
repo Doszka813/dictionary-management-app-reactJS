@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 import {dictionaryService} from '../../services/dictionaryService.js';
-import { Button } from 'reactstrap';
+import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 
 class DictionaryCreator extends Component {
   constructor(){
@@ -10,24 +10,35 @@ class DictionaryCreator extends Component {
       newDictionary: {
         id: undefined,
         name: '',
-        pairs: [
-          {
-            domain: '',
-            range: '',
-            errors: []
-          }
-        ]
+        pairs: []
       },
-      isNameAdded: false,
+      pair: {
+        domain: '',
+        range: '',
+        errors: []
+      },
+      isNameAdded: true,
     };
 
-    this.updateState = this.updateState.bind(this);
+    this.updateName = this.updateName.bind(this);
+    this.updateDomain = this.updateDomain.bind(this);
+    this.updateRange = this.updateRange.bind(this);
   };
 
-  updateState(e) {
-    this.setState({
-      newDictionary: e.target.value
-    });
+  updateName(e) {
+    var newDictionary = {...this.state.newDictionary};
+    newDictionary.name = e.target.value;
+    this.setState({newDictionary});
+  };
+  updateDomain(e) {
+    let pair = {...this.state.pair};
+    pair.domain = e.target.value;
+    this.setState({pair});
+  };
+  updateRange(e) {
+    let pair = {...this.state.pair};
+    pair.range = e.target.value;
+    this.setState({pair});
   };
 
   //Functions
@@ -45,14 +56,10 @@ class DictionaryCreator extends Component {
   };
 
   addPair() {
-    this.$validator.validateAll().then((result) => {
-      if(result) {
-        this.dictionary.pairs.push(this.pair);
-        this.pair = {
-          errors: []
-        };
-      } else {}
-    });
+    this.dictionary.pairs.push(this.pair);
+    this.pair = {
+      errors: []
+    };
   };
 
   submit() {
@@ -63,17 +70,35 @@ class DictionaryCreator extends Component {
     let form;
       if(!this.state.isNameAdded){
         form =
-          <form ref="form">
-            <input type="text" value={this.state.newDictionary.name} onChange={this.updateState} label="Name" name="name"></input>
+          <Form ref="form">
+            <FormGroup>
+              <Label for="name">Dictionary Name</Label>
+              <Input type="text" value={this.state.newDictionary.name} onChange={this.updateName} name="name" id="exampleEmail" />
+            </FormGroup>
             <br />
             <Button color="primary" onClick={this.submitName}>Create</Button>
             <Button color="error" onClick={this.clearInput}>Clear</Button>
             <Link to="/"><Button color="warning">Back</Button></Link>
-          </form>
-      }else {
-        form=<p>lalal</p>
+          </Form>
+      } else {
+        form=
+          <Form ref="form">
+            <FormGroup>
+              <Label for="domain">Domain</Label>
+              <Input type="text" value={this.state.pair.domain} onChange={this.updateDomain} name="domain" id="domain" />
+            </FormGroup>
+            <br />
+            <FormGroup>
+              <Label for="range">Range</Label>
+              <Input type="text" value={this.state.pair.range} onChange={this.updateRange} name="range" id="range" />
+            </FormGroup>
+            <Button color="primary" onClick={this.addPair}>Add</Button>
+            <br />
+            <br />
+            <Button color="primary" onClick={this.submit}>Submit</Button>
+            <Button color="warning">Back</Button>
+          </Form>
       }
-
 
     return (
       <div className="container">
