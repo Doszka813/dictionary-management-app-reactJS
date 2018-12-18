@@ -105,7 +105,9 @@ class App extends Component {
   // }
   render() {
     return (
-      <DictionariesList dictionaries={this.state.dictionaries} />
+      <div className="wrapper">
+        <DictionariesList dictionaries={this.state.dictionaries} />
+      </div>
     );
   }
 }

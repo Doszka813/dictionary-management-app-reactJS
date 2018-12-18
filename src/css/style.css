@@ -4,11 +4,21 @@
   margin: 0 auto;
 }
 
+.wrapper {
+  width: 50%;
+}
 .container {
   padding: 20px;
+  width: 40%
 }
 
 .dictionary {
+  width: 100%;
+  margin-bottom: 50px;
+}
+
+.dictionary h2 {
+  text-transform: uppercase;
 }
 
 .dictionary button {
@@ -23,7 +33,7 @@ h1 {
 table {
   font-size: 20px;
   text-align: left;
-  margin: 40px auto;
+  margin: 0px auto;
   border-collapse: collapse;
 }
 
@@ -35,11 +45,14 @@ tr {
 
 th {
   border-bottom: 1px solid black;
+  text-align: center;
 }
 th,
 td {
   padding:  0 40px 0 0;
   padding-top: 15px;
+  text-align: left;
+
 }
 
 a {
