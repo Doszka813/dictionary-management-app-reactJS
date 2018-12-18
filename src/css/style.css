@@ -1,6 +1,18 @@
 
-body {
+* {
   text-align: center;
+  margin: 0 auto;
+}
+
+.container {
+  padding: 20px;
+}
+
+.dictionary {
+}
+
+.dictionary button {
+  width: 100%
 }
 
 h1 {

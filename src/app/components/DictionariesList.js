@@ -1,15 +1,21 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { Link } from "react-router-dom";
+import Dictionary from './Dictionary';
+import { Nav } from 'reactstrap';
 
-class DictionariesList extends Component {
+const DictionariesList = (props) => {
+  const { dictionaries } = props;
 
-  render() {
-    return (
-      <div className="DictionariesList">
-        <p>      1 2 3 4
-</p>
-      </div>
-    );
-  }
+  return (
+    <div className="container">
+      <h1>Available Dictionaries</h1>
+      <Nav pills className="dictionaries">
+        {dictionaries && dictionaries.map((dictionary, id) => {
+          return <Dictionary key = {id} dictionary={dictionary}/>
+        })}
+      </Nav>
+    </div>
+  )
 }
 
 export default DictionariesList;

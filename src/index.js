@@ -2,8 +2,21 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './app/App';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { BrowserRouter, Route } from 'react-router-dom';
+
+import DictionariesList from './app/components/DictionariesList';
+import DictionaryCreator from './app/components/DictionaryCreator';
+import About from './app/components/About';
+import Navigation from './app/components/Navigation';
 
 ReactDOM.render(
-  <App />,
+  <BrowserRouter>
+    <div className="app">
+      <Navigation />
+      <Route exact path="/about" component={About}></Route>
+      <Route path="/" component={App}></Route>
+      <Route path="/addDictionary" component={DictionaryCreator}></Route>
+    </div>
+  </BrowserRouter>,
 document.getElementById('app')
 );
