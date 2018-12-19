@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import {dictionaryService} from '../../services/dictionaryService.js';
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 
@@ -17,47 +17,51 @@ class DictionaryCreator extends Component {
         range: '',
         errors: []
       },
-      isNameAdded: true,
-    };
+      isNameAdded: false,
+    }
 
     this.updateName = this.updateName.bind(this);
+    this.toggleFlag = this.toggleFlag.bind(this);
+
     this.updateDomain = this.updateDomain.bind(this);
     this.updateRange = this.updateRange.bind(this);
   };
 
   updateName(e) {
-    var newDictionary = {...this.state.newDictionary};
-    newDictionary.name = e.target.value;
-    this.setState({newDictionary});
+    let dictionary = {...this.state.newDictionary};
+    dictionary.name = e.target.value;
+    this.setState({
+      newDictionary: dictionary});
   };
   updateDomain(e) {
     let pair = {...this.state.pair};
     pair.domain = e.target.value;
-    this.setState({pair});
+    this.setState({
+      pair: pair});
   };
   updateRange(e) {
     let pair = {...this.state.pair};
     pair.range = e.target.value;
-    this.setState({pair});
+    this.setState({
+      pair: pair});
   };
 
-  //Functions
   clearInput() {
     this.setState({
-      newDictionary: ''
+      newDictionary: {}
     });
     ReactDOM.findDOMNode(this.refs.form).focus();
   };
 
-  submitName() {
+  toggleFlag() {
     this.setState({
-      isNameAdded: !isNameAdded
-    });
+      isNameAdded: !this.state.isNameAdded
+    })
   };
 
   addPair() {
-    this.dictionary.pairs.push(this.pair);
-    this.pair = {
+    this.state.newDictionary.pairs.push(this.state.pair);
+    this.state.pair = {
       errors: []
     };
   };
@@ -68,36 +72,37 @@ class DictionaryCreator extends Component {
 
   render() {
     let form;
-      if(!this.state.isNameAdded){
-        form =
-          <Form ref="form">
-            <FormGroup>
-              <Label for="name">Dictionary Name</Label>
-              <Input type="text" value={this.state.newDictionary.name} onChange={this.updateName} name="name" id="exampleEmail" />
-            </FormGroup>
-            <br />
-            <Button color="primary" onClick={this.submitName}>Create</Button>
-            <Button color="error" onClick={this.clearInput}>Clear</Button>
-            <Link to="/"><Button color="warning">Back</Button></Link>
-          </Form>
-      } else {
-        form=
-          <Form ref="form">
-            <FormGroup>
-              <Label for="domain">Domain</Label>
-              <Input type="text" value={this.state.pair.domain} onChange={this.updateDomain} name="domain" id="domain" />
-            </FormGroup>
-            <br />
-            <FormGroup>
-              <Label for="range">Range</Label>
-              <Input type="text" value={this.state.pair.range} onChange={this.updateRange} name="range" id="range" />
-            </FormGroup>
-            <Button color="primary" onClick={this.addPair}>Add</Button>
-            <br />
-            <br />
-            <Button color="primary" onClick={this.submit}>Submit</Button>
-            <Button color="warning">Back</Button>
-          </Form>
+
+    if(!this.state.isNameAdded){
+      form =
+        <Form ref="form">
+          <FormGroup>
+            <Label htmlFor="name">Dictionary Name</Label>
+            <Input type="text" value={this.state.newDictionary.name} onChange={this.updateName} name="name" id="name" />
+          </FormGroup>
+          <br />
+          <Button color="primary" onClick={this.toggleFlag}>Create</Button>
+          <Button color="error" onClick={this.clearInput}>Clear</Button>
+          <Link to="/about"><Button color="warning">Back</Button></Link>
+        </Form>
+    } else if(this.state.isNameAdded) {
+      form=
+        <Form ref="form">
+          <FormGroup>
+            <Label htmlFor="domain">Domain</Label>
+            <Input type="text" value={this.state.pair.domain} onChange={this.updateDomain} name="domain" id="domain" />
+          </FormGroup>
+          <br />
+          <FormGroup>
+            <Label htmlFor="range">Range</Label>
+            <Input type="text" value={this.state.pair.range} onChange={this.updateRange} name="range" id="range" />
+          </FormGroup>
+          <Button color="primary" onClick={this.addPair}>Add</Button>
+          <br />
+          <br />
+          <Button color="primary" onClick={this.submit}>Submit</Button>
+          <Button color="warning" onClick={this.toggleFlag}>Back</Button>
+        </Form>
       }
 
     return (
