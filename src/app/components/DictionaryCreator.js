@@ -70,9 +70,7 @@ class DictionaryCreator extends Component {
   submit = () => {
     let dictionary = {...this.state.newDictionary};
     this.props.addDictionary(dictionary);
-    this.setState({
-      isNameAdded: !isNameAdded
-    });
+    this.props.toggleView();
   };
 
   render() {
@@ -110,7 +108,7 @@ class DictionaryCreator extends Component {
 
     if(this.state.newDictionary.pairs.length > 0 ) {
       preview =
-        <div>
+        <div className="preview">
         <Table>
           <thead>
             <tr>

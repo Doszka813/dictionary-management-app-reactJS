@@ -9,11 +9,11 @@
 }
 .container {
   padding: 20px;
-  width: 40%
+  width: 100%
 }
 
 .dictionary {
-  width: 70%;
+  width: 100%;
   margin-bottom: 50px;
 }
 
@@ -55,4 +55,8 @@ td {
 a {
   text-decoration: none;
   cursor: pointer;
+}
+
+.preview {
+  margin-top: 20px
 }

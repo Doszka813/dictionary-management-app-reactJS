@@ -26,11 +26,6 @@ const Navigation = () => {
                 tag={RRNavLink}
                 to="/dictionaries">Dictionaries</NavLink>
             </NavItem>
-            <NavItem>
-              <NavLink className="nav-link-gdc"
-                tag={RRNavLink}
-                to="/addDictionary/">Add Dictionary</NavLink>
-            </NavItem>
           </Nav>
         </Navbar>
       </div>

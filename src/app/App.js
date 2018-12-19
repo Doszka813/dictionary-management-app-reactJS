@@ -131,7 +131,7 @@ class App extends Component {
       <Button color="info" onClick={this.toggleView}>{this.state.isCreateMode ? 'End' : 'Add new'}</Button>
 
       { this.state.isCreateMode
-        ? <DictionaryCreator addDictionary={this.addDictionary} />
+        ? <DictionaryCreator toggleView={this.toggleView} addDictionary={this.addDictionary} />
         : <DictionariesList dictionaries={this.state.dictionaries} />
       }
       </div>
