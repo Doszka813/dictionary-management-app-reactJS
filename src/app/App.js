@@ -1,96 +1,105 @@
 import React, { Component } from 'react';
+import { Button } from 'reactstrap';
 
 import {dictionaryService} from '../services/dictionaryService.js';
 import Navigation from './components/Navigation';
 import DictionariesList from './components/DictionariesList';
+import DictionaryCreator from './components/DictionaryCreator';
 import '../css/style.css';
 
 class App extends Component {
   constructor(){
     super();
     this.state = {
+      isCreateMode: false,
       dictionaries: [
         {
+          id: 0,
           name: 'Dict1',
           pairs: [
             {
-              id: 0,
               domain: 'aa',
-              range: 'sd'
+              range: 'sd',
+              errors: []
             },
             {
-              id: 1,
               domain: 'aa',
-              range: 'sd'
+              range: 'sd',
+              errors: []
             },
             {
-              id: 2,
               domain: 'azzza',
-              range: 'sd'
+              range: 'sd',
+              errors: []
             }
           ]
         },
         {
+          id: 1,
           name: 'Dict2',
           pairs: [
             {
-              id: 0,
               domain: 'azxzxza',
-              range: 'sdzxzx'
+              range: 'sdzxzx',
+              errors: []
             }
           ]
-        },{
+        },
+        {
+          id: 2,
           name: 'Dict3',
           pairs: [
             {
-              id: 0,
               domain: 'aa',
-              range: 'sd'
+              range: 'sd',
+              errors: []
             },
             {
-              id: 1,
               domain: 'aa',
-              range: 'sd'
+              range: 'sd',
+              errors: []
             },
             {
-              id: 2,
               domain: 'azzza',
-              range: 'sd'
+              range: 'sd',
+              errors: []
             }
           ]
         },
         {
+          id: 3,
           name: 'Dict4',
           pairs: [
             {
-              id: 0,
               domain: 'aza',
-              range: 'sd'
+              range: 'sd',
+              errors: []
             },
             {
-              id: 1,
               domain: 'aa',
-              range: 'sdxzcz'
+              range: 'sdxzcz',
+              errors: []
             }
           ]
         },
         {
+          id: 4,
           name: 'Dict5',
           pairs: [
             {
-              id: 0,
               domain: 'aa',
-              range: 'sd'
+              range: 'sd',
+              errors: []
             },
             {
-              id: 1,
               domain: 'aa',
-              range: 'sd'
+              range: 'sd',
+              errors: []
             },
             {
-              id: 2,
               domain: 'azzza',
-              range: 'sd'
+              range: 'sd',
+              errors: []
             }
           ]
         },
@@ -103,10 +112,28 @@ class App extends Component {
   //     dictionaries: dictionaries
   //   })
   // }
+  toggleView = () => {
+    this.setState({
+      isCreateMode: !this.state.isCreateMode
+    })
+  }
+  addDictionary = (dictionary) => {
+    let dictionaries = [...this.state.dictionaries, dictionary];
+    this.setState({
+      dictionaries: dictionaries
+    })
+  }
+
   render() {
     return (
       <div className="wrapper">
-        <DictionariesList dictionaries={this.state.dictionaries} />
+      <br />
+      <Button color="info" onClick={this.toggleView}>{this.state.isCreateMode ? 'End' : 'Add new'}</Button>
+
+      { this.state.isCreateMode
+        ? <DictionaryCreator addDictionary={this.addDictionary} />
+        : <DictionariesList dictionaries={this.state.dictionaries} />
+      }
       </div>
     );
   }

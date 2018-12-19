@@ -13,7 +13,7 @@
 }
 
 .dictionary {
-  width: 100%;
+  width: 70%;
   margin-bottom: 50px;
 }
 
@@ -32,27 +32,24 @@ h1 {
 
 table {
   font-size: 20px;
-  text-align: left;
+  text-align: center;
   margin: 0px auto;
   border-collapse: collapse;
 }
 
 tr {
-  text-align: left;
   border-bottom: 1px dotted grey;
 
 }
 
 th {
   border-bottom: 1px solid black;
-  text-align: center;
 }
+
 th,
 td {
   padding:  0 40px 0 0;
   padding-top: 15px;
-  text-align: left;
-
 }
 
 a {

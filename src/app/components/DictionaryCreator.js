@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Link, Redirect } from "react-router-dom";
-import {dictionaryService} from '../../services/dictionaryService.js';
 import { Button, Form, FormGroup, Label, Input, Table } from 'reactstrap';
+
+import {dictionaryService} from '../../services/dictionaryService.js';
 import Pair from './Pair';
 
 class DictionaryCreator extends Component {
@@ -14,6 +15,7 @@ class DictionaryCreator extends Component {
         pairs: []
       },
       pair: {
+        id: undefined,
         domain: '',
         range: '',
         errors: []
@@ -26,6 +28,7 @@ class DictionaryCreator extends Component {
     this.updateDomain = this.updateDomain.bind(this);
     this.updateRange = this.updateRange.bind(this);
     this.addPair = this.addPair.bind(this);
+    this.submit = this.submit.bind(this);
   };
 
   updateName(e) {
@@ -49,15 +52,6 @@ class DictionaryCreator extends Component {
       pair: pair});
   };
 
-  // clearInput() {
-  //   let dictionary = {...this.state.newDictionary};
-  //   dictionary.name = '';
-  //   this.setState({
-  //     newDictionary: dictionary
-  //   });
-  //   ReactDOM.findDOMNode(this.refs.form).focus();
-  // };
-
   toggleFlag() {
     this.setState({
       isNameAdded: !this.state.isNameAdded
@@ -69,12 +63,16 @@ class DictionaryCreator extends Component {
     let newPair = this.state.pair;
     dictionary.pairs.push(newPair);
     this.setState({
-      newDictionary: dictionary
+      newDictionary: dictionary,
     });
   };
 
-  submit() {
-    this.dictionaryService.add(JSON.stringify(this.state.newDictionary));
+  submit = () => {
+    let dictionary = {...this.state.newDictionary};
+    this.props.addDictionary(dictionary);
+    this.setState({
+      isNameAdded: !isNameAdded
+    });
   };
 
   render() {
@@ -89,8 +87,6 @@ class DictionaryCreator extends Component {
           </FormGroup>
           <br />
           <Button color="primary" onClick={this.toggleFlag}>Create</Button>
-          <Button color="error" onClick={this.clearInput}>Clear</Button>
-          <Link to="/about"><Button color="warning">Back</Button></Link>
         </Form>
     } else {
       form =
@@ -110,27 +106,27 @@ class DictionaryCreator extends Component {
           <Button color="primary" onClick={this.submit}>Submit</Button>
           <Button color="warning" onClick={this.toggleFlag}>Back</Button>
         </Form>
-      }
+    }
 
-      if(this.state.newDictionary.pairs.length > 0 ) {
-        preview =
-          <div>
-          <Table>
-            <thead>
-              <tr>
-                <th></th>
-                <th>Domain</th>
-                <th>Range</th>
-              </tr>
-            </thead>
-            <tbody>
-              {this.state.newDictionary.pairs.map((pair, index) => {
-              return <Pair key = {index} pair={pair}/>
-              })}
-            </tbody>
-          </Table>
-      </div>
-      }
+    if(this.state.newDictionary.pairs.length > 0 ) {
+      preview =
+        <div>
+        <Table>
+          <thead>
+            <tr>
+              <th></th>
+              <th>Domain</th>
+              <th>Range</th>
+            </tr>
+          </thead>
+          <tbody>
+            {this.state.newDictionary.pairs.map((pair, index) => {
+            return <Pair key = {index} pair={pair}/>
+            })}
+          </tbody>
+        </Table>
+    </div>
+    }
 
     return (
       <div className="container">

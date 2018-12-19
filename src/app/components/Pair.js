@@ -5,7 +5,7 @@ const Pair = (props) => {
   const { pair } = props;
   return (
     <tr>
-      <td>{pair.id +1}</td>
+      <td></td>
       <td>{pair.domain}</td>
       <td>{pair.range}</td>
     </tr>

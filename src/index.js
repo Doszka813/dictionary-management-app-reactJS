@@ -13,8 +13,8 @@ ReactDOM.render(
   <BrowserRouter>
     <div className="app">
       <Navigation />
-      <Route path="/about" component={About}></Route>
-      <Route exact path="/dictionaries" component={App}></Route>
+      <Route exact path="/" component={About}></Route>
+      <Route path="/dictionaries" component={App}></Route>
       <Route path="/addDictionary" component={DictionaryCreator}></Route>
     </div>
   </BrowserRouter>,
