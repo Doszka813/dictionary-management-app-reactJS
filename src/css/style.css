@@ -25,6 +25,11 @@
   width: 100%
 }
 
+button#del {
+  width: 5%;
+  float: right;
+}
+
 h1 {
   padding: 30px;
   margin: 50px auto;
@@ -59,8 +64,4 @@ a {
 
 .preview {
   margin-top: 20px
-}
-
-span#remove {
-  float: right;
 }

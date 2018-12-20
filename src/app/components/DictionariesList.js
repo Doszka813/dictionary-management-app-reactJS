@@ -13,7 +13,7 @@ const DictionariesList = (props) => {
 
       <Nav pills className="dictionaries">
         {dictionaries && dictionaries.map((dictionary, id) => {
-          return <Dictionary key = {id} dictionary={dictionary}/>
+          return <Dictionary key = {dictionary.id} dictionary={dictionary}/>
         })}
       </Nav>
     </div>

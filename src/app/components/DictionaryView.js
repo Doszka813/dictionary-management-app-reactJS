@@ -4,13 +4,14 @@ import { Button, NavItem, NavLink, Table } from 'reactstrap';
 import '../../css/style.css';
 import { FaTrashAlt, FaEdit } from 'react-icons/fa';
 
-class Dictionary extends Component {
+class DictionaryView extends Component {
   constructor(){
     super();
     this.state = {
-      id: null
     }
-  }
+  };
+
+
 
   // componentDidMount() {
   //   let id = this.props.dictionary.match.params.id;
@@ -23,11 +24,15 @@ class Dictionary extends Component {
   //
   // }
   render() {
+    const ind = this.props.match.params.id;
+    let dictionary = this.props.dictionaries[ind];
+
+    if (!ind) {
+      return <div>Sorry, but the dictionary was not found</div>
+    }
     return (
-      <NavItem className="dictionary">
-        <NavLink><h2>{this.props.dictionary.name}</h2></NavLink>
-        <Button id="del" color="danger"><FaTrashAlt /></Button>
-        <Link to={`/dictionary/${this.props.dictionary.id}`}><Button color="info">Edit <FaEdit /></Button></Link>
+      <div className="DictionaryView">
+        <h1>{dictionary.name}</h1>
 
         <Table>
           <thead>
@@ -38,7 +43,7 @@ class Dictionary extends Component {
             </tr>
           </thead>
           <tbody>
-          {this.props.dictionary && this.props.dictionary.pairs.map((pair, index) => {
+          {dictionary && dictionary.pairs.map((pair, index) => {
             return (
               <tr key = {index}>
                 <td>{index +1}</td>
@@ -49,9 +54,9 @@ class Dictionary extends Component {
           })}
           </tbody>
         </Table>
-      </NavItem>
+      </div>
     )
   }
 }
 
-export default Dictionary;
+export default DictionaryView;

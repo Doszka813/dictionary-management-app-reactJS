@@ -3,7 +3,6 @@ import { Link, Redirect } from "react-router-dom";
 import { Button, Form, FormGroup, Label, Input, Table } from 'reactstrap';
 
 import {dictionaryService} from '../../services/dictionaryService.js';
-import Pair from './Pair';
 
 class DictionaryCreator extends Component {
   constructor(){
