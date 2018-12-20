@@ -60,3 +60,7 @@ a {
 .preview {
   margin-top: 20px
 }
+
+span#remove {
+  float: right;
+}

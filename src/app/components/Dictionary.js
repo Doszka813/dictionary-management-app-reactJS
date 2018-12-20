@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Button, NavItem, NavLink, Table } from 'reactstrap';
 import Pair from './Pair';
 import '../../css/style.css';
+import { FaTrashAlt } from 'react-icons/fa';
 
 class Dictionary extends Component {
   constructor(){
@@ -18,11 +19,14 @@ class Dictionary extends Component {
   //     id: id
   //   })
   // }
-
+  // removeDictionary = (dictionary) => {
+  //   this.props.removeDictionary(dictionary);
+  //
+  // }
   render() {
     return (
       <NavItem className="dictionary">
-        <NavLink><h2>{this.props.dictionary.name}</h2></NavLink>
+        <NavLink><h2>{this.props.dictionary.name}<span id="remove"><FaTrashAlt color="red"/></span></h2></NavLink>
         <Link to={`/dictionary/${this.props.dictionary.id}`}><Button color="info">Edit</Button></Link>
 
         <Table>

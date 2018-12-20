@@ -12,13 +12,7 @@ import Navigation from './app/components/Navigation';
 
 ReactDOM.render(
   <BrowserRouter>
-    <div className="app">
-      <Navigation />
-      <Route exact path="/" component={About}></Route>
-      <Route path="/dictionaries" component={App}></Route>
-      <Route path="/dictionary/:id" component={Dictionary}></Route>
-      <Route path="/addDictionary" component={DictionaryCreator}></Route>
-    </div>
+    <App />
   </BrowserRouter>,
 document.getElementById('app')
 );

@@ -70,7 +70,6 @@ class DictionaryCreator extends Component {
   submit = () => {
     let dictionary = {...this.state.newDictionary};
     this.props.addDictionary(dictionary);
-    this.props.toggleView();
   };
 
   render() {

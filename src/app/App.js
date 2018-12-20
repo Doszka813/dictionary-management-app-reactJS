@@ -5,7 +5,9 @@ import {dictionaryService} from '../services/dictionaryService.js';
 import Navigation from './components/Navigation';
 import DictionariesList from './components/DictionariesList';
 import DictionaryCreator from './components/DictionaryCreator';
+import About from './components/About';
 import '../css/style.css';
+import { Switch, Route } from 'react-router-dom';
 
 class App extends Component {
   constructor(){
@@ -124,17 +126,21 @@ class App extends Component {
     })
   }
 
+  removeDictionary = (dictionary) => {
+  }
+
   render() {
     return (
-      <div className="wrapper">
-      <br />
-      <Button color="info" onClick={this.toggleView}>{this.state.isCreateMode ? 'End' : 'Add new'}</Button>
-
-      { this.state.isCreateMode
-        ? <DictionaryCreator toggleView={this.toggleView} addDictionary={this.addDictionary} />
-        : <DictionariesList dictionaries={this.state.dictionaries} />
-      }
+      <div className="App">
+        <Navigation />
+        <Switch>
+          <Route exact path="/" component={About}></Route>
+          <Route path="/dictionaries" render={ props => <DictionariesList dictionaries={this.state.dictionaries} />}></Route>
+          <Route path="/addDictionary" render={ props => <DictionaryCreator addDictionary={this.addDictionary} />}></Route>
+        </Switch>
       </div>
+
+
     );
   }
 }
