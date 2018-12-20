@@ -3,6 +3,7 @@ import { Link, Redirect } from "react-router-dom";
 import { Button, Form, FormGroup, Label, Input, Table } from 'reactstrap';
 
 import {dictionaryService} from '../../services/dictionaryService.js';
+import { withRouter } from "react-router-dom";
 
 class DictionaryCreator extends Component {
   constructor(){
@@ -69,6 +70,8 @@ class DictionaryCreator extends Component {
   submit = () => {
     let dictionary = {...this.state.newDictionary};
     this.props.addDictionary(dictionary);
+    this.props.history.push("/dictionaries")
+
   };
 
   render() {
@@ -117,7 +120,13 @@ class DictionaryCreator extends Component {
           </thead>
           <tbody>
             {this.state.newDictionary.pairs.map((pair, index) => {
-            return <Pair key = {index} pair={pair}/>
+              return (
+                <tr key = {index}>
+                  <td>{index +1}</td>
+                  <td>{pair.domain}</td>
+                  <td>{pair.range}</td>
+                </tr>
+              )
             })}
           </tbody>
         </Table>
@@ -134,4 +143,4 @@ class DictionaryCreator extends Component {
   }
 }
 
-export default DictionaryCreator;
+export default withRouter(DictionaryCreator);
