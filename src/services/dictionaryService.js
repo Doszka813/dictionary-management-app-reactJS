@@ -1,6 +1,6 @@
 export const dictionaryService = ({
   getAll() {
-    return JSON.parse(window.localStorage.getItem('dictionaries')) || [1, 2, 3, 4]
+    return JSON.parse(window.localStorage.getItem('dictionaries')) || []
   },
   getById(id) {
     return this.getAll().find(dictionary => dictionary.id === +id)

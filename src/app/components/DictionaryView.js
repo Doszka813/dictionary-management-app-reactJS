@@ -23,8 +23,23 @@ class DictionaryView extends Component {
     this.updateRange = this.updateRange.bind(this);
     this.toggleEditName = this.toggleEditName.bind(this);
     this.toggleEditPairs = this.toggleEditPairs.bind(this);
+    this.removeDictionary = this.removeDictionary.bind(this);
 
   };
+
+  componentWillMount() {
+    const ind = this.props.match.params.id;
+    let dictionary = this.props.dictionaries[ind];
+    this.setState({
+      dictionary: dictionary
+    })
+  };
+
+  removeDictionary() {
+    const ind = this.props.match.params.id;
+    this.props.removeDictionary(ind);
+    this.props.history.push("/dictionaries")
+  }
 
   updateName(e) {
     let dictionary = {...this.state.dictionary};
@@ -35,8 +50,8 @@ class DictionaryView extends Component {
   };
 
   updateDomain(e) {
-    let pair = {...this.state.pair};
-    pair.domain = e.target.value;
+    let dictionary = {...this.state.dictionary};
+    dictionary.pair.domain = e.target.value;
     this.setState({
       pair: pair});
   };
@@ -46,13 +61,6 @@ class DictionaryView extends Component {
     pair.range = e.target.value;
     this.setState({
       pair: pair});
-  };
-  componentWillMount() {
-    const ind = this.props.match.params.id;
-    let dictionary = this.props.dictionaries[ind];
-    this.setState({
-      dictionary: dictionary
-    })
   };
 
   toggleEditName() {
@@ -66,10 +74,7 @@ class DictionaryView extends Component {
       editPairs: !this.state.editPairs
     });
   };
-  // removeDictionary = (dictionary) => {
-  //   this.props.removeDictionary(dictionary);
-  //
-  // }
+
   render() {
     let nameForm;
     let domainForm;
@@ -82,7 +87,6 @@ class DictionaryView extends Component {
             <Label htmlFor="name">Dictionary Name</Label>
             <Input type="text" placeholder={this.state.dictionary.name} value={this.state.dictionary.name} onChange={this.updateName} name="name" id="name" />
           </FormGroup>
-          <FaCheck />
           <br />
         </Form>
     };
@@ -106,7 +110,10 @@ class DictionaryView extends Component {
 
     return (
       <div className="DictionaryView">
-        <h1>{this.state.dictionary.name} <Button onClick={this.toggleEditName} color="info"><FaEdit /></Button></h1>
+        <h1>{this.state.dictionary.name}
+        <Button onClick={this.toggleEditName} color="info">{ this.state.editName ? <FaCheck /> : <FaEdit />}</Button>
+        <Button onClick={this.removeDictionary} color="danger"><FaTrashAlt /></Button></h1>
+
         {nameForm}
         <Table className="editTable">
           <thead>
@@ -125,7 +132,7 @@ class DictionaryView extends Component {
                 <td>{index +1}</td>
                 <td>{pair.domain} {domainForm}</td>
                 <td>{pair.range} {rangeForm}</td>
-                <td><FaEdit /></td>
+                <td><FaEdit onClick={this.toggleEditPairs}/></td>
                 <td><FaTrashAlt /></td>
               </tr>
             )
