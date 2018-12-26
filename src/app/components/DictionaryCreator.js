@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link, Redirect } from "react-router-dom";
 import { Button, Form, FormGroup, Label, Input, Table } from 'reactstrap';
+import { FaSave, FaCheck, FaPlus, FaArrowLeft } from 'react-icons/fa';
 
 import {dictionaryService} from '../../services/dictionaryService.js';
 import { withRouter } from "react-router-dom";
@@ -88,7 +89,7 @@ class DictionaryCreator extends Component {
             <Input type="text" value={this.state.newDictionary.name} onChange={this.updateName} name="name" id="name" />
           </FormGroup>
           <br />
-          <Button color="primary" onClick={this.toggleFlag}>Create</Button>
+          <Button id="btn" color="primary" onClick={this.toggleFlag}>Create</Button>
         </Form>
     } else {
       form =
@@ -102,11 +103,11 @@ class DictionaryCreator extends Component {
             <Label htmlFor="range">Range</Label>
             <Input type="text" value={this.state.pair.range} onChange={this.updateRange} name="range" id="range" />
           </FormGroup>
-          <Button color="primary" onClick={this.addPair}>Add</Button>
+          <Button id="btn" color="primary" onClick={this.addPair}><FaPlus /> Add</Button>
           <br />
           <br />
-          <Button color="primary" onClick={this.submit}>Submit</Button>
-          <Button color="warning" onClick={this.toggleFlag}>Back</Button>
+          <Button id="btn" color="primary" onClick={this.submit}>Submit</Button>
+          <Button id="btn" color="warning" onClick={this.toggleFlag}><FaArrowLeft /> Back</Button>
         </Form>
     }
 
