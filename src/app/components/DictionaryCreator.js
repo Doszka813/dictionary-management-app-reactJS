@@ -9,13 +9,13 @@ class DictionaryCreator extends Component {
   constructor(){
     super();
     this.state = {
+      dictionaryService: dictionaryService,
       newDictionary: {
         id: undefined,
         name: '',
         pairs: []
       },
       pair: {
-        id: undefined,
         domain: '',
         range: '',
         errors: []
@@ -62,16 +62,19 @@ class DictionaryCreator extends Component {
     let dictionary = {...this.state.newDictionary};
     let newPair = this.state.pair;
     dictionary.pairs.push(newPair);
+    let pair = {...this.pair};
+    pair.domain = '';
+    pair.range = '';
     this.setState({
       newDictionary: dictionary,
+      pair: pair
     });
   };
 
   submit = () => {
     let dictionary = {...this.state.newDictionary};
-    this.props.addDictionary(dictionary);
+    this.props.saveDictionary(dictionary);
     this.props.history.push("/dictionaries")
-
   };
 
   render() {

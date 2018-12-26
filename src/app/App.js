@@ -14,127 +14,28 @@ class App extends Component {
   constructor(){
     super();
     this.state = {
-      dictionaries: [
-        {
-                  id: 0,
-                  name: 'Dict1',
-                  pairs: [
-                    {
-                      domain: 'aa',
-                      range: 'sd',
-                      errors: []
-                    },
-                    {
-                      domain: 'aa',
-                      range: 'sd',
-                      errors: []
-                    },
-                    {
-                      domain: 'azzza',
-                      range: 'sd',
-                      errors: []
-                    }
-                  ]
-                },
-                {
-                  id: 1,
-                  name: 'Dict2',
-                  pairs: [
-                    {
-                      domain: 'azxzxza',
-                      range: 'sdzxzx',
-                      errors: []
-                    }
-                  ]
-                },
-                {
-                  id: 2,
-                  name: 'Dict3',
-                  pairs: [
-                    {
-                      domain: 'aa',
-                      range: 'sd',
-                      errors: []
-                    },
-                    {
-                      domain: 'aa',
-                      range: 'sd',
-                      errors: []
-                    },
-                    {
-                      domain: 'azzza',
-                      range: 'sd',
-                      errors: []
-                    }
-                  ]
-                },
-                {
-                  id: 3,
-                  name: 'Dict4',
-                  pairs: [
-                    {
-                      domain: 'aza',
-                      range: 'sd',
-                      errors: []
-                    },
-                    {
-                      domain: 'aa',
-                      range: 'sdxzcz',
-                      errors: []
-                    }
-                  ]
-                },
-                {
-                  id: 4,
-                  name: 'Dict5',
-                  pairs: [
-                    {
-                      domain: 'aa',
-                      range: 'sd',
-                      errors: []
-                    },
-                    {
-                      domain: 'aa',
-                      range: 'sd',
-                      errors: []
-                    },
-                    {
-                      domain: 'azzza',
-                      range: 'sd',
-                      errors: []
-                    }
-                  ]
-                },
-      ]
+      dictionaryService: dictionaryService,
+      dictionaries: []
     }
   };
 
-  // componentWillMount() {
-  //   let dictionaries = dictionaryService.getAll();
-  //   this.setState({
-  //     dictionaries: dictionaries
-  //   });
-  //   console.log(this.state.dictionaries)
-  // };
-
-  addDictionary = (dictionary) => {
-    let dictionaries = [...this.state.dictionaries, dictionary];
+  componentDidMount() {
+    let dictionaries = dictionaryService.getAll();
     this.setState({
       dictionaries: dictionaries
-    })
+    });
+  };
+
+  saveDictionary = (dictionary) => {
+    dictionaryService.add(JSON.stringify(dictionary));
+  };
+
+  updateDictionary = (dictionary) => {
+    dictionaryService.update(JSON.stringify(this.dictionary));
   }
 
-  // removeDictionary() {
-  //   this.service.removeById(this.dictionary.id);
-  //   this.$router.push('/dictionaries');
-  // }
-
   removeDictionary = (id) => {
-    let dictionaries = [...this.state.dictionaries];
-    dictionaries.splice(id, 1);
-    this.setState({
-      dictionaries: dictionaries
-    })
+    dictionaryService.removeById(id);
   }
 
   render() {
@@ -144,13 +45,11 @@ class App extends Component {
         <Switch>
           <Route exact path="/" component={About}></Route>
           <Route path="/dictionaries" render={ props => <DictionariesList dictionaries={this.state.dictionaries} />}></Route>
-          <Route path="/dictionary/:id" render={ props => <DictionaryView {...props} dictionaries={this.state.dictionaries} removeDictionary={this.removeDictionary} />}></Route>
-          <Route path="/addDictionary" render={ props => <DictionaryCreator addDictionary={this.addDictionary} />}></Route>
+          <Route path="/dictionary/:id" render={ props => <DictionaryView {...props} dictionaries={this.state.dictionaries} updateDictionary={this.updateDictionary} removeDictionary={this.removeDictionary} />}></Route>
+          <Route path="/addDictionary" render={ props => <DictionaryCreator saveDictionary={this.saveDictionary} />}></Route>
         </Switch>
       </div>
-
-
     );
   }
 }
- export default App;
+export default App;
