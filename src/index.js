@@ -6,7 +6,6 @@ import { BrowserRouter, Route } from 'react-router-dom';
 
 import DictionariesList from './app/components/DictionariesList';
 import DictionaryCreator from './app/components/DictionaryCreator';
-import Dictionary from './app/components/Dictionary';
 import About from './app/components/About';
 import Navigation from './app/components/Navigation';
 

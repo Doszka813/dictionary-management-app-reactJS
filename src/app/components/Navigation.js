@@ -6,7 +6,6 @@ import About from './About';
 import DictionariesList from './DictionariesList';
 import DictionaryCreator from './DictionaryCreator';
 import { FaPlus } from 'react-icons/fa';
-import Dictionary from './Dictionary';
 
 import { Nav, NavItem, Navbar, NavbarBrand, NavLink } from 'reactstrap';
 

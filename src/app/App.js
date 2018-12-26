@@ -16,7 +16,7 @@ class App extends Component {
     this.state = {
       dictionaryService: dictionaryService,
       dictionaries: []
-    }
+    };
   };
 
   componentDidMount() {
@@ -26,12 +26,17 @@ class App extends Component {
     });
   };
 
+  shouldComponentUpdate(nextState) {
+     const newDict = this.state.dictionaries !== nextState.dictionaries;
+     return newDict;
+  };
+
   saveDictionary = (dictionary) => {
     dictionaryService.add(JSON.stringify(dictionary));
   };
 
   updateDictionary = (dictionary) => {
-    dictionaryService.update(JSON.stringify(this.dictionary));
+    dictionaryService.update(JSON.stringify(dictionary));
   }
 
   removeDictionary = (id) => {

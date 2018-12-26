@@ -48,8 +48,6 @@ class DictionaryView extends Component {
   updateDictionary() {
     let dictionary = {...this.state.dictionary};
     this.props.updateDictionary(dictionary);
-    console.log(this.state.dictionary);
-    this.props.history.push("/dictionaries")
   };
 
   removePair(index) {
@@ -59,7 +57,7 @@ class DictionaryView extends Component {
       dictionary: dictionary
     });
     this.updateDictionary(this.state.dictionary);
-    if(dictionary.pairs.length < 1) {
+    if(this.state.dictionary.pairs.length < 1) {
       this.removeDictionary();
     }
   };
@@ -83,8 +81,12 @@ class DictionaryView extends Component {
     let dictionary = {...this.state.dictionary};
     let newPair = {...this.state.pair};
     dictionary.pairs.push(newPair);
+    let pair = {...this.pair};
+    pair.domain = '';
+    pair.range = '';
     this.setState({
-      dictionary: dictionary
+      dictionary: dictionary,
+      pair: pair
     })
   };
 
@@ -132,10 +134,7 @@ class DictionaryView extends Component {
 
   render() {
     let nameForm;
-    let domainForm;
-    let rangeForm;
     let addPairForm;
-    let tableContent;
 
     if(this.state.editName){
       nameForm =
@@ -147,47 +146,6 @@ class DictionaryView extends Component {
           <br />
         </Form>
     }
-
-    // if(!this.state.editPairsMode){
-    //   tableContent =
-    //     <tr key={index}>
-    //       <td>{index +1}</td>
-    //       <td>{pair.domain}</td>
-    //       <td>{pair.range}</td>
-    //       <td><FaEdit onClick={this.toggleEditPairs}/></td>
-    //       <td><FaTrashAlt onClick={this.removePair.bind(this, index)}/></td>
-    //     </tr>
-    // } else {
-    //     tableContent =
-    //       <tr key={index}>
-    //         <td>{index +1}</td>
-    //         <td>
-    //           {pair.domain}
-    //           <Input type="text" onChange={this.updateDomain.bind(this, index)} value={this.state.dictionary.pairs[index].domain} name="domain" id="domain" />
-    //         </td>
-    //         <td>
-    //           {pair.range}
-    //           <Input type="text" onChange={this.updateRange.bind(this, index)} value={this.state.dictionary.pairs[index].range} name="range" id="range" />
-    //         </td>
-    //         <td><FaEdit onClick={this.toggleEditPairs.bind(this, index)}/></td>
-    //         <td><FaTrashAlt onClick={this.removePair.bind(this, index)}/></td>
-    //       </tr>
-      // domainForm =
-      //   <Form ref="form">
-      //     <FormGroup>
-      //       <Label htmlFor="domain"></Label>
-      //       <Input type="text" onChange={this.updateDomain.bind(this, index)} name="domain" id="domain" />
-      //     </FormGroup>
-      //   </Form>;
-      //
-      // rangeForm =
-      //   <Form ref="form">
-      //     <FormGroup>
-      //     <Label htmlFor="range"></Label>
-      //     <Input type="text" onChange={this.updateRange.bind(this, index)} name="range" id="range" />
-      //     </FormGroup>
-      //   </Form>
-    // }
 
     if(this.state.addNewPair) {
       addPairForm =
@@ -249,7 +207,6 @@ class DictionaryView extends Component {
         {addPairForm}
 
         <Button color="success" onClick={this.toggleAddNewPair}><FaPlus /></Button>
-        {this.state.addNewPair ? <Button onClick={this.addPair} color="primary"><FaCheck /> Done </Button> : null }
         <Button color="primary" onClick={this.updateDictionary}><FaSave /></Button>
 
         <Link to="/dictionaries/"><Button color="warning" onClick={this.toggleFlag}>Back</Button></Link>
