@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 import { Button, NavItem, NavLink, Table, Form, FormGroup, Label, Input } from 'reactstrap';
 import '../../css/style.css';
-import { FaTrashAlt, FaEdit, FaSave, FaCheck, FaPlus } from 'react-icons/fa';
+import { FaTrashAlt, FaEdit, FaSave, FaCheck, FaPlus, FaArrowLeft } from 'react-icons/fa';
 
 class DictionaryView extends Component {
   constructor(){
@@ -159,8 +159,10 @@ class DictionaryView extends Component {
           <Label htmlFor="range">Range</Label>
           <Input type="text" value={this.state.pair.range} onChange={this.newRange} name="range" id="range" />
         </FormGroup>
-        <Button color="primary" onClick={this.toggleAddNewPair}><FaCheck /></Button>
-        <Button color="primary" onClick={this.addPair}>Add</Button>
+        <Button id="btn" color="primary" onClick={this.toggleAddNewPair}><FaCheck />Done</Button>
+        <Button id="btn" color="primary" onClick={this.addPair}><FaPlus /> Add</Button>
+        <br />
+        <br />
       </Form>
     };
 
@@ -168,8 +170,8 @@ class DictionaryView extends Component {
     return (
       <div className="DictionaryView">
         <h1>{this.state.dictionary.name}
-        <Button onClick={this.toggleEditName} color="info">{ this.state.editName ? <FaCheck /> : <FaEdit />}</Button>
-        <Button onClick={this.removeDictionary} color="danger"><FaTrashAlt /></Button></h1>
+        <Button id="btn" onClick={this.toggleEditName} color="info">{ this.state.editName ? <FaCheck /> : <FaEdit />}</Button>
+        <Button id="btn" onClick={this.removeDictionary} color="danger"><FaTrashAlt /></Button></h1>
         {nameForm}
 
         <Table className="Table">
@@ -206,10 +208,9 @@ class DictionaryView extends Component {
         </Table>
         {addPairForm}
 
-        <Button color="success" onClick={this.toggleAddNewPair}><FaPlus /></Button>
-        <Button color="primary" onClick={this.updateDictionary}><FaSave /></Button>
-
-        <Link to="/dictionaries/"><Button color="warning" onClick={this.toggleFlag}>Back</Button></Link>
+        <Button id="btn" color="success" onClick={this.toggleAddNewPair}><FaPlus /> Add row</Button>
+        <Button id="btn" color="primary" onClick={this.updateDictionary}><FaSave /> Save</Button>
+        <Link to="/dictionaries/"><Button id="btn" color="warning" onClick={this.toggleFlag}><FaArrowLeft /> Back </Button></Link>
 
       </div>
     )

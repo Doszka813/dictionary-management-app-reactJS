@@ -4,6 +4,16 @@
   margin: 0 auto;
 }
 
+h2 {
+  padding: 40px 0;
+}
+
+#btn {
+    min-width: 60px;
+    margin-right: 10px;
+    padding: 5px;
+}
+
 .wrapper {
   width: 50%;
 }
