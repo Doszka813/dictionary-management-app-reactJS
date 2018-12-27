@@ -1,5 +1,5 @@
 # dictionary-management-app-reactJS
-Dictionary managent app with ReactJS and Reactstrap
+Dictionary managent app with ReactJS, Redux and Reactstrap
 
 
 # install dependencies
