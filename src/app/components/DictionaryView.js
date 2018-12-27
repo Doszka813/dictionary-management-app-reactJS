@@ -1,132 +1,128 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
-import { Button, NavItem, NavLink, Table, Form, FormGroup, Label, Input } from 'reactstrap';
+import { Button, Table, Form, FormGroup, Label, Input } from 'reactstrap';
 import '../../css/style.css';
 import { FaTrashAlt, FaEdit, FaSave, FaCheck, FaPlus, FaArrowLeft } from 'react-icons/fa';
+import { connect } from 'react-redux';
 
 class DictionaryView extends Component {
-  constructor(){
+  constructor(props) {
     super();
+    const dictionary = props.dictionary;
     this.state = {
-      dictionary: null,
+      dictionary: {
+        id: dictionary.id,
+        name: dictionary.name,
+        pairs: [...dictionary.pairs]
+      },
       addNewPair: false,
       editName: false,
       editPairsMode: false,
       pair: {
         domain: '',
-        range: '',
-        errors: [],
-      },
+        range: ''
+      }
     }
-    this.updateName = this.updateName.bind(this);
-    this.updateDomain = this.updateDomain.bind(this);
-    this.updateRange = this.updateRange.bind(this);
-    this.toggleEditName = this.toggleEditName.bind(this);
-    this.toggleAddNewPair = this.toggleAddNewPair.bind(this);
-    this.toggleEditPairs = this.toggleEditPairs.bind(this);
-    this.removeDictionary = this.removeDictionary.bind(this);
-    this.updateDictionary = this.updateDictionary.bind(this);
-    this.addPair = this.addPair.bind(this);
-    this.newDomain = this.newDomain.bind(this);
-    this.newRange = this.newRange.bind(this);
   };
 
-  componentWillMount() {
-    const ind = this.props.match.params.id;
-    let dictionary = this.props.dictionaries[ind];
-    this.setState({
-      dictionary: dictionary
-    })
-  };
-
-  removeDictionary() {
-    const ind = this.props.match.params.id;
-    this.props.removeDictionary(ind);
+  removeDictionary = () => {
+    const id = this.state.dictionary.id;
+    this.props.dispatch({
+      type: 'DELETE_DICTIONARY',
+      id
+    });
     this.props.history.push("/dictionaries")
-  };
+  }
 
-  updateDictionary() {
-    let dictionary = {...this.state.dictionary};
-    this.props.updateDictionary(dictionary);
-  };
+  updateDictionary = () => {
+    let dictionary = { ...this.state.dictionary };
+    this.props.dispatch({
+      type: 'UPDATE_DICTIONARY',
+      dictionary
+    });
+  }
 
-  removePair(index) {
-    let dictionary = {...this.state.dictionary};
+  removePair = (index) => {
+    let dictionary = { ...this.state.dictionary };
     dictionary.pairs.splice(index, 1);
     this.setState({
       dictionary: dictionary
     });
     this.updateDictionary(this.state.dictionary);
-    if(this.state.dictionary.pairs.length < 1) {
+    if (dictionary.pairs.length < 1) {
       this.removeDictionary();
     }
-  };
+  }
 
-  newDomain(e) {
-    let pair = {...this.state.pair};
+  newDomain = (e) => {
+    let pair = { ...this.state.pair };
     pair.domain = e.target.value;
     this.setState({
-      pair: pair});
-  };
+      pair: pair
+    });
+  }
 
-  newRange(e) {
-    let pair = {...this.state.pair};
+  newRange = (e) => {
+    let pair = { ...this.state.pair };
     pair.range = e.target.value;
     this.setState({
       pair: pair
     });
-  };
+  }
 
-  addPair() {
-    let dictionary = {...this.state.dictionary};
-    let newPair = {...this.state.pair};
+  addPair = () => {
+    let dictionary = { ...this.state.dictionary };
+    let newPair = { ...this.state.pair };
     dictionary.pairs.push(newPair);
     let pair = {...this.pair};
     pair.domain = '';
     pair.range = '';
     this.setState({
       dictionary: dictionary,
-      pair: pair
+      pair: {
+        domain: '',
+        range: ''
+      }
     })
-  };
+  }
 
-  updateName(e) {
-    let dictionary = {...this.state.dictionary};
+  updateName = (e) => {
+    let dictionary = { ...this.state.dictionary };
     dictionary.name = e.target.value;
     this.setState({
       dictionary: dictionary
     });
-  };
+  }
 
-  updateDomain(e, index) {
-    let dictionary = {...this.state.dictionary};
+  updateDomain = (index, e) => {
+    let dictionary = { ...this.state.dictionary };
     dictionary.pairs[index].domain = e.target.value;
     this.setState({
       dictionary: dictionary
     });
-  };
+  }
 
-  updateRange(e, index) {
-    let dictionary = {...this.state.dictionary};
+  updateRange = (index, e) => {
+    let dictionary = { ...this.state.dictionary };
     dictionary.pairs[index].range = e.target.value;
     this.setState({
       dictionary: dictionary
     });
-  };
+  }
 
-  toggleEditName() {
+  toggleEditName = () => {
     this.setState({
       editName: !this.state.editName
     });
-  };
+  }
 
-  toggleAddNewPair() {
+  toggleAddNewPair = () => {
     this.setState({
       addNewPair: !this.state.addNewPair
     });
-  };
+  }
 
-  toggleEditPairs() {
+  toggleEditPairs = () => {
     this.setState({
       editPairsMode: !this.state.editPairsMode
     });
@@ -136,7 +132,7 @@ class DictionaryView extends Component {
     let nameForm;
     let addPairForm;
 
-    if(this.state.editName){
+    if (this.state.editName) {
       nameForm =
         <Form ref="form">
           <FormGroup>
@@ -185,25 +181,25 @@ class DictionaryView extends Component {
             </tr>
           </thead>
           <tbody>
-          {this.state.dictionary && this.state.dictionary.pairs.map((pair, index) => {
-            return (
-              <tr key={index}>
-                <td>{index +1}</td>
-                <td>{pair.domain} {this.state.editPairsMode
-                  ? <Input type="text" onChange={this.updateDomain.bind(this, index)}
-                    value={pair.domain} name="domain" id="domain" />
-                  : null}
-                </td>
-                <td>{pair.range} {this.state.editPairsMode
-                  ? <Input type="text" onChange={this.updateRange.bind(this, index)}
-                    value={pair.range} name="range" id="range" />
-                  : null}
-                </td>
-               <td><FaEdit onClick={this.toggleEditPairs}/></td>
-                <td><FaTrashAlt onClick={this.removePair.bind(this, index)}/></td>
-              </tr>
-            )
-          })}
+            {this.state.dictionary.pairs.map((pair, index) => {
+              return (
+                <tr key={index}>
+                  <td>{index + 1}</td>
+                  <td>{pair.domain} {this.state.editPairsMode
+                    ? <Input type="text" onChange={this.updateDomain.bind(this, index)}
+                      value={pair.domain} name="domain" id="domain" />
+                    : null}
+                  </td>
+                  <td>{pair.range} {this.state.editPairsMode
+                    ? <Input type="text" onChange={this.updateRange.bind(this, index)}
+                      value={pair.range} name="range" id="range" />
+                    : null}
+                  </td>
+                  <td><FaEdit onClick={this.toggleEditPairs} /></td>
+                  <td><FaTrashAlt onClick={this.removePair.bind(this, index)} /></td>
+                </tr>
+              )
+            })}
           </tbody>
         </Table>
         {addPairForm}
@@ -217,4 +213,13 @@ class DictionaryView extends Component {
   }
 }
 
-export default DictionaryView;
+const mapStateToProps = (state, ownProps) => {
+  const dictId = ownProps.match.params.id;
+  const dict = state.find(dict => dict.id === +dictId);
+  console.log('dict view: ' + dictId);
+  return {
+    dictionary: dict
+  }
+}
+
+export default connect(mapStateToProps)(DictionaryView);

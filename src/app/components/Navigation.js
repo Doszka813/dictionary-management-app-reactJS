@@ -1,12 +1,6 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import { NavLink as RRNavLink } from 'react-router-dom';
-
-import About from './About';
-import DictionariesList from './DictionariesList';
-import DictionaryCreator from './DictionaryCreator';
 import { FaPlus } from 'react-icons/fa';
-
 import { Nav, NavItem, Navbar, NavbarBrand, NavLink } from 'reactstrap';
 
 const Navigation = () => {
