@@ -23,43 +23,36 @@ class DictionaryCreator extends Component {
       },
       isNameAdded: false,
     }
-
-    this.updateName = this.updateName.bind(this);
-    this.toggleFlag = this.toggleFlag.bind(this);
-    this.updateDomain = this.updateDomain.bind(this);
-    this.updateRange = this.updateRange.bind(this);
-    this.addPair = this.addPair.bind(this);
-    this.submit = this.submit.bind(this);
   };
 
-  updateName(e) {
+  updateName = (e) => {
     let dictionary = {...this.state.newDictionary};
     dictionary.name = e.target.value;
     this.setState({
       newDictionary: dictionary});
   };
 
-  updateDomain(e) {
+  updateDomain = (e) => {
     let pair = {...this.state.pair};
     pair.domain = e.target.value;
     this.setState({
       pair: pair});
   };
 
-  updateRange(e) {
+  updateRange = (e) => {
     let pair = {...this.state.pair};
     pair.range = e.target.value;
     this.setState({
       pair: pair});
   };
 
-  toggleFlag() {
+  toggleFlag = () => {
     this.setState({
       isNameAdded: !this.state.isNameAdded
     })
   };
 
-  addPair() {
+  addPair = () => {
     let dictionary = {...this.state.newDictionary};
     let newPair = this.state.pair;
     dictionary.pairs.push(newPair);
