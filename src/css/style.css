@@ -1,3 +1,6 @@
+.app {
+  height: 100vh
+}
 
 * {
   text-align: center;
@@ -5,34 +8,49 @@
 }
 
 h2 {
-  padding: 40px 0;
-}
-
-#btn {
-    min-width: 60px;
-    margin: 10px;
-    padding: 5px 10px;
-}
-
-.wrapper {
-  width: 50%;
-}
-.container {
-  padding: 20px;
-  width: 100%
-}
-
-.dictionary {
-  width: 100%;
-  margin-bottom: 50px;
-}
-
-.dictionary h2 {
+  padding: 60px 0 0;
   text-transform: uppercase;
 }
 
-.dictionary button {
-  width: 100%
+h1 {
+  padding: 60px 0;
+}
+
+.container {
+  margin-top: 50px;
+}
+
+.dictionaries {
+  width:100%;
+}
+
+.dictionary {
+  width: 80%;
+  margin-bottom: 50px;
+}
+
+#edit_btn {
+  width: 100%;
+}
+
+
+#btn {
+  min-width: 60px;
+  margin: 10px;
+  padding: 10px 15px;
+}
+
+.preview {
+  margin-top: 20px;
+}
+
+.dictionaryView {
+  width: 50%;
+  padding: 20px;
+}
+
+.nav-link-gdc {
+  color: white;
 }
 
 table {
@@ -44,11 +62,6 @@ table {
 
 tr {
   border-bottom: 1px dotted grey;
-
-}
-
-th {
-  border-bottom: 1px solid black;
 }
 
 th,
@@ -60,14 +73,4 @@ td {
 a {
   text-decoration: none;
   cursor: pointer;
-}
-
-.preview {
-  margin-top: 20px
-}
-
-
-.DictionaryView {
-  width: 50%;
-  padding: 20px;
 }

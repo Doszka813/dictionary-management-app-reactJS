@@ -16,7 +16,7 @@ class DictionariesList extends Component {
               return (
                 <div className="dictionary" key={id}>
                   <h2>{dictionary.name}</h2>
-                  <Link to={`/dictionary/${dictionary.id}`}><Button color="info">Edit <FaEdit /></Button></Link>
+                  <Link to={`/dictionary/${dictionary.id}`}><Button id="edit_btn" color="info">Edit <FaEdit /></Button></Link>
                   <div>
                     <Table>
                       <thead>
@@ -47,7 +47,7 @@ class DictionariesList extends Component {
       )
     } else {
       return (
-        <h2>No dictionaries found. You can <Link to="/addDictionary">add </Link>one yourself.</h2>
+        <h1>No dictionaries found. You can <Link to="/addDictionary">add </Link>one yourself.</h1>
       )
     }
   }

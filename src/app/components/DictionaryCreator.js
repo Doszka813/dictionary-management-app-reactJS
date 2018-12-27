@@ -109,7 +109,7 @@ class DictionaryCreator extends Component {
           <Table>
             <thead>
               <tr>
-                <th></th>
+                <th>ID</th>
                 <th>Domain</th>
                 <th>Range</th>
               </tr>

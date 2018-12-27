@@ -11,8 +11,8 @@ class DictionaryView extends Component {
   constructor(props) {
     super();
     const dictionary = props.dictionary;
+    this.validator = dictionaryValidationService;
     this.state = {
-      validator: dictionaryValidationService,
       dictionary: {
         id: dictionary.id,
         name: dictionary.name,
@@ -47,12 +47,13 @@ class DictionaryView extends Component {
   };
 
   removePair = (index) => {
+    console.log('idx'+index);
     let dictionary = { ...this.state.dictionary };
     dictionary.pairs.splice(index, 1);
     this.setState({
       dictionary: dictionary
     });
-    this.updateDictionary(this.state.dictionary);
+    this.updateDictionary();
     if (dictionary.pairs.length < 1) {
       this.removeDictionary();
     };
@@ -136,32 +137,24 @@ class DictionaryView extends Component {
     });
   };
 
-
   validate = () => {
     let dictionary = { ...this.state.dictionary };
     dictionary.pairs.forEach(pair => pair.errors = []);
-
     const addError = (pairIndex, errorType) => dictionary.pairs[pairIndex].errors.push(errorType);
-
-    this.state.validator.findDuplicates(dictionary.pairs)
+    this.validator.findDuplicates(dictionary.pairs)
         .forEach(errorPairIndex => addError(errorPairIndex, "DUPLICATE"));
-
-    this.state.validator.findForks(dictionary.pairs)
+    this.validator.findForks(dictionary.pairs)
         .forEach(errorPairIndex => addError(errorPairIndex, "FORK"));
-
-    this.state.validator.findChains(dictionary.pairs)
+    this.validator.findChains(dictionary.pairs)
         .forEach(errorPairIndex => addError(errorPairIndex, "CHAIN"));
-
-    this.state.validator.findCycles(dictionary.pairs)
+    this.validator.findCycles(dictionary.pairs)
         .forEach(errorPairIndex => addError(errorPairIndex, "CYCLE"));
-
     this.setState({
       dictionary: dictionary
     });
   };
 
   render() {
-
     let nameForm;
     let addPairForm;
 
@@ -178,25 +171,25 @@ class DictionaryView extends Component {
 
     if(this.state.addNewPair) {
       addPairForm =
-      <Form ref="form">
-        <FormGroup>
-          <Label htmlFor="domain">Domain</Label>
-          <Input type="text" value={this.state.pair.domain} onChange={this.newDomain} name="domain" id="domain" />
-        </FormGroup>
-        <br />
-        <FormGroup>
-          <Label htmlFor="range">Range</Label>
-          <Input type="text" value={this.state.pair.range} onChange={this.newRange} name="range" id="range" />
-        </FormGroup>
-        <Button id="btn" color="primary" onClick={this.toggleAddNewPair}><FaCheck /> Done</Button>
-        <Button id="btn" color="primary" onClick={this.addPair}><FaPlus /> Add</Button>
-        <br />
-        <br />
-      </Form>
+        <Form ref="form">
+          <FormGroup>
+            <Label htmlFor="domain">Domain</Label>
+            <Input type="text" value={this.state.pair.domain} onChange={this.newDomain} name="domain" id="domain" />
+          </FormGroup>
+          <br />
+          <FormGroup>
+            <Label htmlFor="range">Range</Label>
+            <Input type="text" value={this.state.pair.range} onChange={this.newRange} name="range" id="range" />
+          </FormGroup>
+          <Button id="btn" color="primary" onClick={this.toggleAddNewPair}><FaCheck /> Done</Button>
+          <Button id="btn" color="primary" onClick={this.addPair}><FaPlus /> Add</Button>
+          <br />
+          <br />
+        </Form>
     };
 
     return (
-      <div className="DictionaryView">
+      <div className="dictionaryView">
         <h1>{this.state.dictionary.name}</h1>
         {nameForm}
         <br />
@@ -233,12 +226,12 @@ class DictionaryView extends Component {
                   </td>
                   <td>
                     {pair.errors && pair.errors.indexOf('DUPLICATE') !== -1 ? <span title="duplicate"><FaExclamationCircle color="#f5ca47"/></span> : null}
-                    {pair.errors && pair.errors.indexOf('FORK') !== -1 ? <span title="fork"><FaExclamationCircle color="orange"/></span> : null}
+                    {pair.errors && pair.errors.indexOf('FORK') !== -1 ? <span title="fork"><FaExclamationCircle color="#f2800d"/></span> : null}
                     {pair.errors && pair.errors.indexOf('CHAIN') !== -1 ? <span title="chain"><FaExclamationCircle color="red"/></span> : null}
-                    {pair.errors && pair.errors.indexOf('CYCLE') !== -1 ? <span title="cycle"><FaExclamationCircle color="#b30000"/></span> : null}
+                    {pair.errors && pair.errors.indexOf('CYCLE') !== -1 ? <span title="cycle"><FaExclamationCircle color="#800000"/></span> : null}
                   </td>
                   <td><FaEdit onClick={this.toggleEditPairs} /></td>
-                  <td><FaTrashAlt onClick={this.removePair.bind(index)} /></td>
+                  <td><FaTrashAlt onClick={this.removePair.bind(this, index)} /></td>
                 </tr>
               )
             })}
