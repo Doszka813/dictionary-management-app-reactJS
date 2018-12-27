@@ -10,8 +10,8 @@ h2 {
 
 #btn {
     min-width: 60px;
-    margin-right: 10px;
-    padding: 5px;
+    margin: 10px;
+    padding: 5px 10px;
 }
 
 .wrapper {
@@ -33,16 +33,6 @@ h2 {
 
 .dictionary button {
   width: 100%
-}
-
-button#del {
-  width: 5%;
-  float: right;
-}
-
-h1 {
-  padding: 30px;
-  margin: 50px auto;
 }
 
 table {
@@ -78,5 +68,6 @@ a {
 
 
 .DictionaryView {
-  width: 50%
+  width: 50%;
+  padding: 20px;
 }

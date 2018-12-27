@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
+import { dictionaryValidationService } from '../../services/dictionaryValidationService';
+import '../../css/style.css';
+
 import { Link } from "react-router-dom";
 import { Button, Table, Form, FormGroup, Label, Input } from 'reactstrap';
-import '../../css/style.css';
-import { FaTrashAlt, FaEdit, FaSave, FaCheck, FaPlus, FaArrowLeft } from 'react-icons/fa';
+import { FaTrashAlt, FaEdit, FaSave, FaCheck, FaPlus, FaArrowLeft, FaExclamationCircle } from 'react-icons/fa';
 import { connect } from 'react-redux';
 
 class DictionaryView extends Component {
@@ -10,6 +12,7 @@ class DictionaryView extends Component {
     super();
     const dictionary = props.dictionary;
     this.state = {
+      validator: dictionaryValidationService,
       dictionary: {
         id: dictionary.id,
         name: dictionary.name,
@@ -20,7 +23,8 @@ class DictionaryView extends Component {
       editPairsMode: false,
       pair: {
         domain: '',
-        range: ''
+        range: '',
+        errors: []
       }
     }
   };
@@ -32,7 +36,7 @@ class DictionaryView extends Component {
       id
     });
     this.props.history.push("/dictionaries")
-  }
+  };
 
   updateDictionary = () => {
     let dictionary = { ...this.state.dictionary };
@@ -40,7 +44,7 @@ class DictionaryView extends Component {
       type: 'UPDATE_DICTIONARY',
       dictionary
     });
-  }
+  };
 
   removePair = (index) => {
     let dictionary = { ...this.state.dictionary };
@@ -51,8 +55,9 @@ class DictionaryView extends Component {
     this.updateDictionary(this.state.dictionary);
     if (dictionary.pairs.length < 1) {
       this.removeDictionary();
-    }
-  }
+    };
+    this.validate();
+  };
 
   newDomain = (e) => {
     let pair = { ...this.state.pair };
@@ -60,7 +65,7 @@ class DictionaryView extends Component {
     this.setState({
       pair: pair
     });
-  }
+  };
 
   newRange = (e) => {
     let pair = { ...this.state.pair };
@@ -68,7 +73,7 @@ class DictionaryView extends Component {
     this.setState({
       pair: pair
     });
-  }
+  };
 
   addPair = () => {
     let dictionary = { ...this.state.dictionary };
@@ -81,10 +86,11 @@ class DictionaryView extends Component {
       dictionary: dictionary,
       pair: {
         domain: '',
-        range: ''
+        range: '',
       }
-    })
-  }
+    });
+    this.validate();
+  };
 
   updateName = (e) => {
     let dictionary = { ...this.state.dictionary };
@@ -92,7 +98,7 @@ class DictionaryView extends Component {
     this.setState({
       dictionary: dictionary
     });
-  }
+  };
 
   updateDomain = (index, e) => {
     let dictionary = { ...this.state.dictionary };
@@ -100,7 +106,8 @@ class DictionaryView extends Component {
     this.setState({
       dictionary: dictionary
     });
-  }
+    this.validate();
+  };
 
   updateRange = (index, e) => {
     let dictionary = { ...this.state.dictionary };
@@ -108,19 +115,20 @@ class DictionaryView extends Component {
     this.setState({
       dictionary: dictionary
     });
-  }
+    this.validate();
+  };
 
   toggleEditName = () => {
     this.setState({
       editName: !this.state.editName
     });
-  }
+  };
 
   toggleAddNewPair = () => {
     this.setState({
       addNewPair: !this.state.addNewPair
     });
-  }
+  };
 
   toggleEditPairs = () => {
     this.setState({
@@ -128,7 +136,32 @@ class DictionaryView extends Component {
     });
   };
 
+
+  validate = () => {
+    let dictionary = { ...this.state.dictionary };
+    dictionary.pairs.forEach(pair => pair.errors = []);
+
+    const addError = (pairIndex, errorType) => dictionary.pairs[pairIndex].errors.push(errorType);
+
+    this.state.validator.findDuplicates(dictionary.pairs)
+        .forEach(errorPairIndex => addError(errorPairIndex, "DUPLICATE"));
+
+    this.state.validator.findForks(dictionary.pairs)
+        .forEach(errorPairIndex => addError(errorPairIndex, "FORK"));
+
+    this.state.validator.findChains(dictionary.pairs)
+        .forEach(errorPairIndex => addError(errorPairIndex, "CHAIN"));
+
+    this.state.validator.findCycles(dictionary.pairs)
+        .forEach(errorPairIndex => addError(errorPairIndex, "CYCLE"));
+
+    this.setState({
+      dictionary: dictionary
+    });
+  };
+
   render() {
+
     let nameForm;
     let addPairForm;
 
@@ -141,7 +174,7 @@ class DictionaryView extends Component {
           </FormGroup>
           <br />
         </Form>
-    }
+    };
 
     if(this.state.addNewPair) {
       addPairForm =
@@ -155,20 +188,22 @@ class DictionaryView extends Component {
           <Label htmlFor="range">Range</Label>
           <Input type="text" value={this.state.pair.range} onChange={this.newRange} name="range" id="range" />
         </FormGroup>
-        <Button id="btn" color="primary" onClick={this.toggleAddNewPair}><FaCheck />Done</Button>
+        <Button id="btn" color="primary" onClick={this.toggleAddNewPair}><FaCheck /> Done</Button>
         <Button id="btn" color="primary" onClick={this.addPair}><FaPlus /> Add</Button>
         <br />
         <br />
       </Form>
     };
 
-
     return (
       <div className="DictionaryView">
-        <h1>{this.state.dictionary.name}
-        <Button id="btn" onClick={this.toggleEditName} color="info">{ this.state.editName ? <FaCheck /> : <FaEdit />}</Button>
-        <Button id="btn" onClick={this.removeDictionary} color="danger"><FaTrashAlt /></Button></h1>
+        <h1>{this.state.dictionary.name}</h1>
         {nameForm}
+        <br />
+        <Button id="btn" onClick={this.toggleEditName} color="info">{ this.state.editName ? <FaCheck /> : <FaEdit />}</Button>
+        <Button id="btn" onClick={this.removeDictionary} color="danger"><FaTrashAlt /></Button>
+        <br />
+        <Button id="btn" onClick={this.validate} color="primary" >Validate</Button>
 
         <Table className="Table">
           <thead>
@@ -176,6 +211,7 @@ class DictionaryView extends Component {
               <th>ID</th>
               <th>Domain</th>
               <th>Range</th>
+              <th></th>
               <th></th>
               <th></th>
             </tr>
@@ -195,19 +231,23 @@ class DictionaryView extends Component {
                       value={pair.range} name="range" id="range" />
                     : null}
                   </td>
+                  <td>
+                    {pair.errors && pair.errors.indexOf('DUPLICATE') !== -1 ? <span title="duplicate"><FaExclamationCircle color="#f5ca47"/></span> : null}
+                    {pair.errors && pair.errors.indexOf('FORK') !== -1 ? <span title="fork"><FaExclamationCircle color="orange"/></span> : null}
+                    {pair.errors && pair.errors.indexOf('CHAIN') !== -1 ? <span title="chain"><FaExclamationCircle color="red"/></span> : null}
+                    {pair.errors && pair.errors.indexOf('CYCLE') !== -1 ? <span title="cycle"><FaExclamationCircle color="#b30000"/></span> : null}
+                  </td>
                   <td><FaEdit onClick={this.toggleEditPairs} /></td>
-                  <td><FaTrashAlt onClick={this.removePair.bind(this, index)} /></td>
+                  <td><FaTrashAlt onClick={this.removePair.bind(index)} /></td>
                 </tr>
               )
             })}
           </tbody>
         </Table>
         {addPairForm}
-
         <Button id="btn" color="success" onClick={this.toggleAddNewPair}><FaPlus /> Add row</Button>
         <Button id="btn" color="primary" onClick={this.updateDictionary}><FaSave /> Save</Button>
         <Link to="/dictionaries/"><Button id="btn" color="warning" onClick={this.toggleFlag}><FaArrowLeft /> Back </Button></Link>
-
       </div>
     )
   }
