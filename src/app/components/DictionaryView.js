@@ -127,7 +127,11 @@ class DictionaryView extends Component {
 
   toggleAddNewPair = () => {
     this.setState({
-      addNewPair: !this.state.addNewPair
+      addNewPair: !this.state.addNewPair,
+      pair: {
+        domain: '',
+        range: '',
+      }
     });
   };
 
