@@ -1,18 +1,18 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from "react-router-dom";
 import { Table, Button, Badge } from 'reactstrap';
 import { FaEdit } from 'react-icons/fa';
 
+const DictionariesList = (props) => {
 
-class DictionariesList extends Component {
-  render() {
-    if (this.props.dictionaries.length >= 1) {
-      return (
-        <div className="container">
-          <h1>Available Dictionaries <Badge color="info">{this.props.dictionaries.length}</Badge></h1>
+  return (
+    <div>
+    {props.dictionaries.length >= 1 ?
+       <div className="container">
+          <h1>Available Dictionaries <Badge color="info">{props.dictionaries.length}</Badge></h1>
           <div className="dictionaries">
-            {this.props.dictionaries.map((dictionary, id) => {
+            {props.dictionaries.map((dictionary, id) => {
               return (
                 <div className="dictionary" key={id}>
                   <h2>{dictionary.name}</h2>
@@ -44,13 +44,10 @@ class DictionariesList extends Component {
             })}
           </div>
         </div>
-      )
-    } else {
-      return (
-        <h1>No dictionaries found. You can <Link to="/addDictionary">add </Link>one yourself.</h1>
-      )
+        : <h1>No dictionaries found. You can <Link to="/addDictionary">add </Link>one yourself.</h1>
     }
-  }
+    </div>
+  )
 }
 
 const mapStateToProps = (state) => {
