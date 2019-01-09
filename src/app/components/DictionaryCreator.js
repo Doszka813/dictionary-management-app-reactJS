@@ -5,6 +5,7 @@ import { FaPlus, FaArrowLeft } from 'react-icons/fa';
 import { withRouter } from "react-router-dom";
 import { connect } from 'react-redux';
 
+
 class DictionaryCreator extends Component {
   constructor() {
     super();
@@ -105,28 +106,7 @@ class DictionaryCreator extends Component {
 
     if (this.state.dictionary.pairs.length > 0) {
       preview =
-        <div className="preview">
-          <Table>
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Domain</th>
-                <th>Range</th>
-              </tr>
-            </thead>
-            <tbody>
-              {this.state.dictionary.pairs.map((pair, index) => {
-                return (
-                  <tr key={index}>
-                    <td>{index + 1}</td>
-                    <td>{pair.domain}</td>
-                    <td>{pair.range}</td>
-                  </tr>
-                )
-              })}
-            </tbody>
-          </Table>
-        </div>
+        <Dictionary {...this.state.dictionary} />
     }
 
     return (
@@ -137,6 +117,39 @@ class DictionaryCreator extends Component {
       </div>
     );
   }
+}
+
+const Dictionary = (dictionary) => {
+  return (
+    <div className="dictionary">
+      <Table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Domain</th>
+            <th>Range</th>
+          </tr>
+        </thead>
+        <tbody>
+          {dictionary && dictionary.pairs.map((pair, index) => {
+            return (
+              <Pair {...pair} key={index}/>
+            )
+          })}
+        </tbody>
+      </Table>
+    </div>
+  )
+}
+
+const Pair = (pair) => {
+  return (
+    <tr>
+      <td>{}</td>
+      <td>{pair.domain}</td>
+      <td>{pair.range}</td>
+    </tr>
+  )
 }
 
 export default withRouter(connect()(DictionaryCreator));

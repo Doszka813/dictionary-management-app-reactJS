@@ -29,25 +29,18 @@ class DictionaryView extends Component {
     }
   };
 
-  removeDictionary = () => {
+  deleteDictionary = () => {
     const id = this.state.dictionary.id;
-    this.props.dispatch({
-      type: 'DELETE_DICTIONARY',
-      id
-    });
+    this.props.deleteDictionary(id);
     this.props.history.push("/dictionaries")
   };
 
   updateDictionary = () => {
     let dictionary = { ...this.state.dictionary };
-    this.props.dispatch({
-      type: 'UPDATE_DICTIONARY',
-      dictionary
-    });
+    this.props.updateDictionary(dictionary);
   };
 
   removePair = (index) => {
-    console.log('idx'+index);
     let dictionary = { ...this.state.dictionary };
     dictionary.pairs.splice(index, 1);
     this.setState({
@@ -198,9 +191,9 @@ class DictionaryView extends Component {
         {nameForm}
         <br />
         <Button id="btn" onClick={this.toggleEditName} color="info">{ this.state.editName ? <FaCheck /> : <FaEdit />}</Button>
-        <Button id="btn" onClick={this.removeDictionary} color="danger"><FaTrashAlt /></Button>
+        <Button id="btn" onClick={this.deleteDictionary} color="danger"><FaTrashAlt /></Button>
         <br />
-        <Button id="btn" onClick={this.validate} color="primary" >Validate</Button>
+        <Button id="btn" onClick={this.validate} color="primary">Validate</Button>
 
         <Table className="Table">
           <thead>
@@ -229,10 +222,7 @@ class DictionaryView extends Component {
                     : null}
                   </td>
                   <td>
-                    {pair.errors && pair.errors.indexOf('DUPLICATE') !== -1 ? <span title="duplicate"><FaExclamationCircle color="#f5ca47"/></span> : null}
-                    {pair.errors && pair.errors.indexOf('FORK') !== -1 ? <span title="fork"><FaExclamationCircle color="#f2800d"/></span> : null}
-                    {pair.errors && pair.errors.indexOf('CHAIN') !== -1 ? <span title="chain"><FaExclamationCircle color="red"/></span> : null}
-                    {pair.errors && pair.errors.indexOf('CYCLE') !== -1 ? <span title="cycle"><FaExclamationCircle color="#800000"/></span> : null}
+                    <Errors {...pair} />
                   </td>
                   <td><FaEdit onClick={this.toggleEditPairs} /></td>
                   <td><FaTrashAlt onClick={this.removePair.bind(this, index)} /></td>
@@ -250,13 +240,30 @@ class DictionaryView extends Component {
   }
 }
 
+const Errors = (pair) => {
+  return (
+    <div>
+      {pair.errors && pair.errors.indexOf('DUPLICATE') !== -1 ? <span title="duplicate"><FaExclamationCircle color="#f5ca47"/></span> : null}
+      {pair.errors && pair.errors.indexOf('FORK') !== -1 ? <span title="fork"><FaExclamationCircle color="#f2800d"/></span> : null}
+      {pair.errors && pair.errors.indexOf('CHAIN') !== -1 ? <span title="chain"><FaExclamationCircle color="red"/></span> : null}
+      {pair.errors && pair.errors.indexOf('CYCLE') !== -1 ? <span title="cycle"><FaExclamationCircle color="#800000"/></span> : null}
+    </div>
+  )
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    updateDictionary: (dictionary) => { dispatch({type: 'UPDATE_DICTIONARY', dictionary: dictionary})},
+    deleteDictionary: (id) => { dispatch({type: 'DELETE_DICTIONARY', id: id})}
+  }
+}
+
 const mapStateToProps = (state, ownProps) => {
   const dictId = ownProps.match.params.id;
   const dict = state.find(dict => dict.id === +dictId);
-  console.log('dict view: ' + dictId);
   return {
     dictionary: dict
   }
 }
 
-export default connect(mapStateToProps)(DictionaryView);
+export default connect(mapStateToProps, mapDispatchToProps)(DictionaryView);

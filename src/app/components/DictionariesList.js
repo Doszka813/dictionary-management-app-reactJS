@@ -14,32 +14,7 @@ const DictionariesList = (props) => {
           <div className="dictionaries">
             {props.dictionaries.map((dictionary, id) => {
               return (
-                <div className="dictionary" key={id}>
-                  <h2>{dictionary.name}</h2>
-                  <Link to={`/dictionary/${dictionary.id}`}><Button id="edit_btn" color="info">Edit <FaEdit /></Button></Link>
-                  <div>
-                    <Table>
-                      <thead>
-                        <tr>
-                          <th>ID</th>
-                          <th>Domain</th>
-                          <th>Range</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {dictionary && dictionary.pairs.map((pair, index) => {
-                          return (
-                            <tr key={index}>
-                              <td>{index + 1}</td>
-                              <td>{pair.domain}</td>
-                              <td>{pair.range}</td>
-                            </tr>
-                          )
-                        })}
-                      </tbody>
-                    </Table>
-                  </div>
-                </div>
+                <Dictionary {...dictionary} key={id}/>
               )
             })}
           </div>
@@ -48,6 +23,42 @@ const DictionariesList = (props) => {
     }
     </div>
   )
+}
+
+const Dictionary = (dictionary) => {
+  return (
+    <div className="dictionary">
+      <h2>{dictionary.name}</h2>
+      <Link to={`/dictionary/${dictionary.id}`}><Button id="edit_btn" color="info">Edit <FaEdit /></Button></Link>
+      <div>
+        <Table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Domain</th>
+              <th>Range</th>
+            </tr>
+          </thead>
+          <tbody>
+            <Pairs {...dictionary}/>
+          </tbody>
+        </Table>
+      </div>
+    </div>
+  )
+}
+
+const Pairs = (dictionary) => {
+  return (
+    dictionary && dictionary.pairs.map((pair, index) => {
+      return (
+        <tr key={index}>
+          <td>{index+1}</td>
+          <td>{pair.domain}</td>
+          <td>{pair.range}</td>
+          </tr>
+      )})
+    )
 }
 
 const mapStateToProps = (state) => {
