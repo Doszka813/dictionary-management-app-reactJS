@@ -64,10 +64,7 @@ class DictionaryCreator extends Component {
   submit = (e) => {
     e.preventDefault();
     const dictionary = { ...this.state.dictionary };
-    this.props.dispatch({
-      type: 'ADD_DICTIONARY',
-      dictionary
-    })
+    this.props.addDictionary(dictionary);
     this.props.history.push('/dictionaries');
   }
 
@@ -91,14 +88,11 @@ class DictionaryCreator extends Component {
             <Label htmlFor="domain">Domain</Label>
             <Input type="text" value={this.state.pair.domain} onChange={this.updateDomain} name="domain" id="domain" />
           </FormGroup>
-          <br />
           <FormGroup>
             <Label htmlFor="range">Range</Label>
             <Input type="text" value={this.state.pair.range} onChange={this.updateRange} name="range" id="range" />
           </FormGroup>
           <Button id="btn" color="primary" onClick={this.addPair}><FaPlus /> Add</Button>
-          <br />
-          <br />
           <Button id="btn" color="primary" onClick={this.submit}>Submit</Button>
           <Button id="btn" color="warning" onClick={this.toggleFlag}><FaArrowLeft /> Back</Button>
         </Form>
@@ -131,25 +125,29 @@ const Dictionary = (dictionary) => {
           </tr>
         </thead>
         <tbody>
-          {dictionary && dictionary.pairs.map((pair, index) => {
-            return (
-              <Pair {...pair} key={index}/>
-            )
-          })}
+          <Pairs {...dictionary} />
         </tbody>
       </Table>
     </div>
   )
 }
 
-const Pair = (pair) => {
+const Pairs = (dictionary) => {
   return (
-    <tr>
-      <td>{}</td>
-      <td>{pair.domain}</td>
-      <td>{pair.range}</td>
-    </tr>
-  )
+    dictionary && dictionary.pairs.map((pair, index) => {
+      return (
+        <tr key={index}>
+          <td>{index+1}</td>
+          <td>{pair.domain}</td>
+          <td>{pair.range}</td>
+          </tr>
+      )})
+    )
 }
 
-export default withRouter(connect()(DictionaryCreator));
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addDictionary: (dictionary) => { dispatch({type: 'ADD_DICTIONARY', dictionary: dictionary})},
+  }
+}
+export default withRouter(connect(null, mapDispatchToProps)(DictionaryCreator));

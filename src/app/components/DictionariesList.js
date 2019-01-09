@@ -14,7 +14,7 @@ const DictionariesList = (props) => {
           <div className="dictionaries">
             {props.dictionaries.map((dictionary, id) => {
               return (
-                <Dictionary {...dictionary} key={id}/>
+                <Dictionary {...dictionary} key={dictionary.id}/>
               )
             })}
           </div>
